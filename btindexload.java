@@ -58,7 +58,7 @@ class btindex implements Serializable {
 public class btindexload {
 
 /*
-* static variables of the Class btindex and size of node which 
+* static variables of the Class btindex and size of node which `
 * will be used throughout the program.
 */
 static final int SDTName_SIZE = 24;
@@ -106,6 +106,7 @@ public static void populatebtindex(int pageSize)  {
         int numBytesInOneRecord = TOTAL_SIZE;
         int numBytesInSdtnameField = STD_NAME_SIZE;
         int numBytesIntField = 4;
+				
         int numRecordsPerPage = pageSize/numBytesInOneRecord;
         SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy hh:mm:ss a");
         byte[] page = new byte[pageSize];
@@ -223,13 +224,7 @@ private static void insert(btindex node, String key,long offset, int reclength) 
 		}
 	}
 
-	/*
-	 * This function splits the btindex and balances the node in it. 
-	 * After split it creates the pointer and stores the pointer of the 
-	 * parent, right node and left node to it if it is an internal node and 
-	 * if it is a leaf node stores the right pointer to the node. Before splitting
-	 * the function sorts the key in ascending order and perform the split.
-	 */
+	
 	private static void split(btindex node) throws IOException {
 		btindex leftnode = new btindex();
 		btindex rightnode = new btindex(); 
@@ -428,22 +423,21 @@ private static void insert(btindex node, String key,long offset, int reclength) 
      btindexload objbtindex = new btindexload();
      
       try {
-       String input = args[0];
-       int pageSize = Integer.parseInt(input);
-       
-       long startTime = System.currentTimeMillis();
-       
-	   objbtindex.initialisebtindex();
-       objbtindex.Createbtindex(pageSize);
+				String input = args[1];
+      	int pageSize = Integer.parseInt(input);
+       	long startTime = System.currentTimeMillis();
+				objbtindex.initialisebtindex();
+			 	
+       	objbtindex.Createbtindex(pageSize);
      
-       long stopTime = System.currentTimeMillis();
+       	long stopTime = System.currentTimeMillis();
        
-       System.out.println(stopTime - startTime + " ms");
-       System.out.println((stopTime - startTime) * 0.001 + " sec");
-       System.out.println("Index file created successfully");
+       	System.out.println(stopTime - startTime + " ms");
+       	System.out.println((stopTime - startTime) * 0.001 + " sec");
+       	System.out.println("Index file created successfully");
 	   
 	} catch (Exception e) {   
-         System.out.println("Invalid pagesize");
+         System.out.println(e);
     }
 
  }

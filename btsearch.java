@@ -21,113 +21,134 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.io.*;
 import java.nio.*;
+class Tree implements Serializable {
+	public List<String> key; 
+	public List<Tree> ptr;
+	public List<Long> offsetvalue;
+	public List<Integer> dataLength; 
+	public Tree parent;
+	public Tree rightpointer; 
+	public Tree leftpointer; 
+	public boolean isLeaf;
+	
+	public Tree() {
+		this.key = new ArrayList<String>();
+		this.ptr = new ArrayList<Tree>();
+		this.offsetvalue = new ArrayList<Long>();
+		this.dataLength = new ArrayList<Integer>();
+		this.parent = null;
+		this.rightpointer = null;
+		this.leftpointer = null;
+		this.isLeaf = false;
+	}
 
+}
 //btsearch class
 public class btsearch {
 
      /*
 	 * static variables of the will be used throughout the program.
 	 */
-    static final int SDTName_SIZE = 25;
-    static final int RECORD_SIZE = 112;
-  	static Tree root;
-	static int Nodesize = 0; 
-	private static final int ID_POS = 0;
-    private static final int DATETIME_POS = 1;
-    private static final int YEAR_POS = 2;
-    private static final int MONTH_POS = 3;
-    private static final int MDATE_POS = 4;
-    private static final int DAY_POS = 5;
-    private static final int TIME_POS = 6;
-    private static final int SENSORID_POS = 7;
-    private static final int SENSORNAME_POS = 8;
-    private static final int COUNTS_POS = 9;
-	private static final int STD_NAME_SIZE = 24;
-    private static final int ID_SIZE = 4;
-    private static final int DATE_SIZE = 8;
-    private static final int YEAR_SIZE = 4;
-    private static final int MONTH_SIZE = 9;
-    private static final int MDATE_SIZE = 4;
-    private static final int DAY_SIZE = 9;
-    private static final int TIME_SIZE = 4;
-    private static final int SENSORID_SIZE = 4;
-    private static final int SENSORNAME_SIZE = 38;
-    private static final int COUNTS_SIZE = 4;
-    private static final int TOTAL_SIZE =    STD_NAME_SIZE + 
-                                            ID_SIZE + 
-                                            DATE_SIZE + 
-                                            YEAR_SIZE + 
-                                            MONTH_SIZE + 
-                                            MDATE_SIZE + 
-                                            DAY_SIZE + 
-                                            TIME_SIZE + 
-                                            SENSORID_SIZE + 
-                                            SENSORNAME_SIZE + 
-                                            COUNTS_SIZE;
-											public static final int ID_OFFSET =   STD_NAME_SIZE;
+    static Tree root;
+		static int Nodesize = 0; 
+		private static final int PERSON_NAME_POS = 0;
+		private static final int BIRTH_DATE_POS = 1;
+    private static final int BIRTH_PLACE_LABEL_POS = 2;
+    private static final int DEATH_DAT_POS = 3;
+    private static final int FIELD_LABEL_POS = 4;
+    private static final int GENRE_LABEL_POS = 5;
+    private static final int INSTRUMENTAL_LABEL_POS = 6;
+    private static final int NATIONALITY_LABEL_POS = 7;
+    private static final int THUMBNAIL_LABEL_POS = 8;
+    private static final int WIKI_PAGEID_POS = 9;
+    private static final int DESCRIPTION_POS = 10;
+		
+		private static final int PERSON_NAME_SIZE = 24;
+    private static final int BIRTH_DATE_SIZE = 4;
+    private static final int BIRTH_PLACE_LABEL_SIZE = 8;
+    private static final int DEATH_DAT_SIZE = 4;
+    private static final int FIELD_LABEL_SIZE = 9;
+    private static final int GENRE_LABEL_SIZE = 4;
+    private static final int INSTRUMENTAL_LABEL_SIZE = 9;
+    private static final int NATIONALITY_LABEL_SIZE = 4;
+    private static final int THUMBNAIL_LABEL_SIZE = 4;
+    private static final int WIKI_PAGEID_SIZE = 38;
+    private static final int DESCRIPTION_SIZE = 4;
+    private static final int TOTAL_SIZE =   PERSON_NAME_SIZE + 
+                                            BIRTH_DATE_SIZE + 
+                                            BIRTH_PLACE_LABEL_SIZE + 
+                                            DEATH_DAT_SIZE + 
+                                            FIELD_LABEL_SIZE + 
+                                            GENRE_LABEL_SIZE + 
+                                            INSTRUMENTAL_LABEL_SIZE + 
+                                            NATIONALITY_LABEL_SIZE + 
+                                            THUMBNAIL_LABEL_SIZE + 
+                                            WIKI_PAGEID_SIZE + 
+                                            DESCRIPTION_SIZE;
+		public static final int BIRTH_DATE_OFFSET =   PERSON_NAME_SIZE;
 
-    private static final int DATE_OFFSET =   STD_NAME_SIZE +
-                                            ID_SIZE;
+    private static final int BIRTH_PLACE_LABEL_OFFSET =   PERSON_NAME_SIZE +
+                                            BIRTH_DATE_SIZE;
 
-    private static final int YEAR_OFFSET =  STD_NAME_SIZE +
-                                            ID_SIZE +
-                                            DATE_SIZE;
+    private static final int DEATH_DAT_OFFSET =  PERSON_NAME_SIZE +
+                                            BIRTH_DATE_SIZE +
+                                            BIRTH_PLACE_LABEL_SIZE;
 
-    private static final int MONTH_OFFSET =  STD_NAME_SIZE +
-                                            ID_SIZE +
-                                            DATE_SIZE +
-                                            YEAR_SIZE;
+    private static final int FIELD_LABEL_OFFSET =  PERSON_NAME_SIZE +
+                                            BIRTH_DATE_SIZE +
+                                            BIRTH_PLACE_LABEL_SIZE +
+                                            DEATH_DAT_SIZE;
 
-    private static final int MDATE_OFFSET =  STD_NAME_SIZE +
-                                            ID_SIZE +
-                                            DATE_SIZE +
-                                            YEAR_SIZE +
-                                            MONTH_SIZE;
+    private static final int GENRE_LABEL_OFFSET =  PERSON_NAME_SIZE +
+                                            BIRTH_DATE_SIZE +
+                                            BIRTH_PLACE_LABEL_SIZE +
+                                            DEATH_DAT_SIZE +
+                                            FIELD_LABEL_SIZE;
 
-    private static final int DAY_OFFSET =   STD_NAME_SIZE +
-                                            ID_SIZE +
-                                            DATE_SIZE +
-                                            YEAR_SIZE +
-                                            MONTH_SIZE +
-                                            MDATE_SIZE;
+    private static final int INSTRUMENTAL_LABEL_OFFSET =   PERSON_NAME_SIZE +
+                                            BIRTH_DATE_SIZE +
+                                            BIRTH_PLACE_LABEL_SIZE +
+                                            DEATH_DAT_SIZE +
+                                            FIELD_LABEL_SIZE +
+                                            GENRE_LABEL_SIZE;
 
-    private static final int TIME_OFFSET =   STD_NAME_SIZE + 
-                                            ID_SIZE + 
-                                            DATE_SIZE +
-                                            YEAR_SIZE +
-                                            MONTH_SIZE +
-                                            MDATE_SIZE +
-                                            DAY_SIZE;
+    private static final int NATIONALITY_LABEL_OFFSET =   PERSON_NAME_SIZE + 
+                                            BIRTH_DATE_SIZE + 
+                                            BIRTH_PLACE_LABEL_SIZE +
+                                            DEATH_DAT_SIZE +
+                                            FIELD_LABEL_SIZE +
+                                            GENRE_LABEL_SIZE +
+                                            INSTRUMENTAL_LABEL_SIZE;
 
-    private static final int SENSORID_OFFSET =   STD_NAME_SIZE + 
-                                                ID_SIZE + 
-                                                DATE_SIZE +
-                                                YEAR_SIZE +
-                                                MONTH_SIZE +
-                                                MDATE_SIZE +
-                                                DAY_SIZE +
-                                                TIME_SIZE;
+    private static final int THUMBNAIL_LABEL_OFFSET =   PERSON_NAME_SIZE + 
+                                                BIRTH_DATE_SIZE + 
+                                                BIRTH_PLACE_LABEL_SIZE +
+                                                DEATH_DAT_SIZE +
+                                                FIELD_LABEL_SIZE +
+                                                GENRE_LABEL_SIZE +
+                                                INSTRUMENTAL_LABEL_SIZE +
+                                                NATIONALITY_LABEL_SIZE;
 
-    private static final int SENSORNAME_OFFSET = STD_NAME_SIZE + 
-                                                ID_SIZE + 
-                                                DATE_SIZE + 
-                                                YEAR_SIZE + 
-                                                MONTH_SIZE + 
-                                                MDATE_SIZE + 
-                                                DAY_SIZE + 
-                                                TIME_SIZE + 
-                                                SENSORID_SIZE; 
+    private static final int WIKI_PAGEID_OFFSET = PERSON_NAME_SIZE + 
+                                                BIRTH_DATE_SIZE + 
+                                                BIRTH_PLACE_LABEL_SIZE + 
+                                                DEATH_DAT_SIZE + 
+                                                FIELD_LABEL_SIZE + 
+                                                GENRE_LABEL_SIZE + 
+                                                INSTRUMENTAL_LABEL_SIZE + 
+                                                NATIONALITY_LABEL_SIZE + 
+                                                THUMBNAIL_LABEL_SIZE; 
 
-    private static final int COUNTS_OFFSET = STD_NAME_SIZE + 
-                                            ID_SIZE + 
-                                            DATE_SIZE + 
-                                            YEAR_SIZE + 
-                                            MONTH_SIZE + 
-                                            MDATE_SIZE + 
-                                            DAY_SIZE + 
-                                            TIME_SIZE + 
-                                            SENSORID_SIZE + 
-                                            SENSORNAME_SIZE;  
+    private static final int DESCRIPTION_OFFSET = PERSON_NAME_SIZE + 
+                                            BIRTH_DATE_SIZE + 
+                                            BIRTH_PLACE_LABEL_SIZE + 
+                                            DEATH_DAT_SIZE + 
+                                            FIELD_LABEL_SIZE + 
+                                            GENRE_LABEL_SIZE + 
+                                            INSTRUMENTAL_LABEL_SIZE + 
+                                            NATIONALITY_LABEL_SIZE + 
+                                            THUMBNAIL_LABEL_SIZE + 
+                                            WIKI_PAGEID_SIZE;  
   
     // Initialize the tree
    public void initialiseTree() {
@@ -150,39 +171,38 @@ public class btsearch {
      
 	  try{
       if(SDTNames.length == 1) {
-		SDTName = SDTNames[0];
+				SDTName = SDTNames[0];
       } else {
-	   	SDTName = String.join(" ", SDTNames);
+	   		SDTName = String.join(" ", SDTNames);
       }
 		 
+       	
 	    //Open channel for the index file
-		FileInputStream fin = new FileInputStream(indexFileName);
-		FileChannel fc = fin.getChannel();
-		fc.position(1025l);
+			FileInputStream fin = new FileInputStream(indexFileName);
+			FileChannel fc = fin.getChannel();
+			fc.position(1025l);
         
-		//Load the index file to Tree object
-		ObjectInputStream ois = new ObjectInputStream(fin);
-        Tree newRoot = (Tree) ois.readObject();
-		ois.close();
+			//Load the index file to Tree object
+			ObjectInputStream ois = new ObjectInputStream(fin);
+			Tree newRoot = (Tree) ois.readObject();
+			ois.close();
 		
 	    //Start searching the input text
-	 	searchData(newRoot, indexFileName, SDTName, spageSize);
+	 		searchData(newRoot, indexFileName, SDTName, spageSize);
 	
-} catch (FileNotFoundException e) {
-	e.printStackTrace();
- } catch (IOException e) {
-	e.printStackTrace();
-} catch (ClassNotFoundException e) {
-	e.printStackTrace();
- }
+		} 
+		catch (FileNotFoundException e) {
+			e.printStackTrace();
+ 		} 
+		catch (IOException e) {
+			e.printStackTrace();
+		} 
+		catch (ClassNotFoundException e) {
+			e.printStackTrace();
+ 		}
+	}
 
-}
-
-	/*
-	 * This function finds whether the record is present in the data file or not. 
-	 * It opens the index file and obtains the offset value of the record and 
-	 * calls the corresponding retrieve data function to display the record 
-	 */
+	
 	private static void searchData(Tree node, String indexFile, String key, String pageSize) {
 	
 	  try{
@@ -259,30 +279,6 @@ public class btsearch {
 			objFile.seek(offset);
 			byte[] record = new byte[TOTAL_SIZE];
 			objFile.read(record, 0, TOTAL_SIZE);
-
-			/////////////////////////////////////////////////
-
-
-			/////////////////////////////////////////////////
-
-
-			/////////////////////////////////////////////////
-			/////////////////////////////////////////////////
-
-
-			/////////////////////////////////////////////////
-
-
-			/////////////////////////////////////////////////
-			 /////////////////////////////////////////////////
-
-
-			/////////////////////////////////////////////////
-
-
-			/////////////////////////////////////////////////
-
-			
 								
 			objFile.close();
 		} catch (IOException e) {
@@ -319,17 +315,14 @@ public class btsearch {
 
       // Main Method
    public static void main(String[] args) {
-	btsearch objTree = new btsearch();
-     
+			btsearch objTree = new btsearch();
+			    
       try {
+      	long startTime = System.currentTimeMillis();
+	 			objTree.searchTree(args);
+       	long stopTime = System.currentTimeMillis();
        
-       long startTime = System.currentTimeMillis();
-	 
-       objTree.searchTree(args);
-       
-       long stopTime = System.currentTimeMillis();
-       
-       System.out.println(stopTime - startTime + " ms");
+       	System.out.println(stopTime - startTime + " ms");
        
     } catch(Exception e) {
 		System.out.println(e);

@@ -92,9 +92,6 @@ public class dbload {
             System.err.println("Error: IOExeption " + e.getMessage());
             exceptionOccurred = true;
         }
-        catch (ParseException e) {
-            System.err.println("Parse error when parsing date: " + e.getMessage());
-        }
         finally {
             // close input/output streams
             if (reader != null) {
